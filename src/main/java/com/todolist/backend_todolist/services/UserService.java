@@ -1,6 +1,8 @@
 package com.todolist.backend_todolist.services;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,17 @@ public class UserService {
     return userDTO;
   }
 
+  public List<UserDTO> mapToDTO(List<User> users) {
+    return users.stream()
+        .map(this::mapToDTO)
+        .collect(Collectors.toList());
+  }
+
+  public List<UserDTO> getAllUsers() {
+    List<User> users = userRepository.findAll();
+    return mapToDTO(users);
+  }
+
   public UserDTO getUserById(Long id) {
     User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
     return mapToDTO(user);
@@ -33,27 +46,21 @@ public class UserService {
 
   @Transactional
   public UserDTO createUser(UserDTO userDTO) {
-    User user = new User(userDTO);
+    User user = new User();
+    user.setUsername(userDTO.getUsername());
+    user.setPassword(userDTO.getPassword());
     userRepository.save(user);
     taskRepository.saveAll(user.getTaskList());
     return mapToDTO(user);
   }
 
   @Transactional
-  public UserDTO updateUser(UserDTO userDTO, Long id) {
-    Optional<User> optionalUserToUpdate = userRepository.findById(id);
-
-    if (!optionalUserToUpdate.isPresent()) {
-      throw new RuntimeException("User not found with id: " + id);
-    }
-
-    else {
-      User userToUpdate = optionalUserToUpdate.get();
-      userToUpdate.setPassword(userDTO.getPassword());
-
-      userRepository.save(userToUpdate);
-      return mapToDTO(userToUpdate);
-    }
+  public UserDTO updateUser(User userDTO, Long id) {
+    User userToUpdate = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    userToUpdate.setUsername(userDTO.getUsername());
+    userToUpdate.setPassword(userDTO.getPassword());
+    userRepository.save(userToUpdate);
+    return mapToDTO(userToUpdate);
   }
 
   public void deleteUser(Long id) {

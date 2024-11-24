@@ -40,13 +40,9 @@ public class User {
   private Long id;
 
   @Column(name = "username")
-  @NotBlank
-  @Size(min = 3, max = 20)
   private String username;
 
   @Column(name = "password")
-  @NotBlank
-  @Size(min = 8, max = 64)
   private String password;
 
   public User(UserDTO userDTO) {
