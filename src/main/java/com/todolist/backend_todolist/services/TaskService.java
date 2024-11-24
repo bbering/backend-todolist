@@ -1,6 +1,8 @@
 package com.todolist.backend_todolist.services;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,28 +29,53 @@ public class TaskService {
     return taskDTO;
   }
 
+  public List<TaskDTO> mapToDTO(List<Task> tasks) {
+    return tasks.stream()
+        .map(this::mapToDTO)
+        .collect(Collectors.toList());
+  }
+
   public TaskDTO findTaskById(Long id) {
     Optional<Task> foundTask = taskRepository.findById(id);
     return mapToDTO(foundTask.orElseThrow(() -> new RuntimeException(
         "Usuario não encontrado")));
   }
 
+  public List<TaskDTO> findAllTasks() {
+    List<Task> tasks = taskRepository.findAll();
+    return mapToDTO(tasks);
+  }
+
   @Transactional
   public TaskDTO createTask(TaskDTO taskDTO) {
-    UserDTO userDTO = userService.getUserById(taskDTO.getUser().getId());
+    if (taskDTO.getUserDTO() == null || taskDTO.getUserDTO().getId() == null) {
+      throw new IllegalArgumentException("UserDTO or UserDTO.id cannot be null");
+    }
+
+    UserDTO userDTO = userService.getUserById(taskDTO.getUserDTO().getId());
     User user = new User(userDTO);
+
     Task task = new Task(taskDTO);
     task.setId(null);
     task.setUser(user);
+
     taskRepository.save(task);
+
     return mapToDTO(task);
   }
 
   @Transactional
-  public TaskDTO updateTask(TaskDTO taskDTO) {
-    Task task = new Task(taskDTO);
-    task.setTaskDescription(taskDTO.getTaskDescription());
-    return mapToDTO(taskRepository.save(task));
+  public TaskDTO updateTask(TaskDTO taskDTO, Long id) {
+    Task taskToUpdate = taskRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Task not found"));
+
+    if (taskDTO.getTaskDescription() != null
+        && !taskDTO.getTaskDescription().equals(taskToUpdate.getTaskDescription())) {
+      taskToUpdate.setTaskDescription(taskDTO.getTaskDescription());
+      taskRepository.save(taskToUpdate);
+    }
+
+    return mapToDTO(taskToUpdate);
   }
 
   public void deleteTask(Long id) {

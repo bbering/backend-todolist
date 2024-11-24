@@ -2,10 +2,8 @@ package com.todolist.backend_todolist.controllers;
 
 import java.util.List;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,13 +23,13 @@ public class UserController {
   @Autowired
   private UserService userService;
 
-  @GetMapping("/list")
+  @GetMapping("/user/list")
   public ResponseEntity<?> listUsers() {
     List<UserDTO> users = userService.getAllUsers();
     return new ResponseEntity<>(users, HttpStatus.OK);
   }
 
-  @PostMapping("/save")
+  @PostMapping("/user/save")
   public ResponseEntity<?> saveUser(@RequestBody UserDTO userDTO) {
     try {
       UserDTO createdUser = userService.createUser(userDTO);
@@ -42,18 +40,18 @@ public class UserController {
     }
   }
 
-  @GetMapping("/list-user/{id}")
+  @GetMapping("/user/list-user/{id}")
   public ResponseEntity<?> findUser(@PathVariable Long id) {
     UserDTO foundUser = userService.getUserById(id);
     return new ResponseEntity<>(foundUser, HttpStatus.FOUND);
   }
 
-  @PutMapping("/update/{id}")
+  @PutMapping("/user/update/{id}")
   public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User user) {
     return new ResponseEntity<>(userService.updateUser(user, id), HttpStatus.ACCEPTED);
   }
 
-  @DeleteMapping("/delete/{id}")
+  @DeleteMapping("/user/delete/{id}")
   public ResponseEntity<?> deleteUser(@PathVariable Long id) {
     userService.deleteUser(id);
     return new ResponseEntity<>(HttpStatus.OK);

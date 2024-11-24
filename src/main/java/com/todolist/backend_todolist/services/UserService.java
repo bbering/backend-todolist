@@ -41,7 +41,7 @@ public class UserService {
 
   public UserDTO getUserById(Long id) {
     User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-    return mapToDTO(user);
+    return new UserDTO(user);
   }
 
   @Transactional
@@ -55,10 +55,10 @@ public class UserService {
   }
 
   @Transactional
-  public UserDTO updateUser(User userDTO, Long id) {
+  public UserDTO updateUser(User user, Long id) {
     User userToUpdate = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-    userToUpdate.setUsername(userDTO.getUsername());
-    userToUpdate.setPassword(userDTO.getPassword());
+    userToUpdate.setUsername(user.getUsername());
+    userToUpdate.setPassword(user.getPassword());
     userRepository.save(userToUpdate);
     return mapToDTO(userToUpdate);
   }

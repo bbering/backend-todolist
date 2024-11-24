@@ -45,6 +45,6 @@ public class Task {
 
   public Task(TaskDTO taskDTO) {
     BeanUtils.copyProperties(taskDTO, this);
+    this.user = new User(taskDTO.getUserDTO());
   }
-
 }
