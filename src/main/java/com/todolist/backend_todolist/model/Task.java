@@ -1,12 +1,12 @@
 package com.todolist.backend_todolist.model;
 
-import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -15,27 +15,24 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users")
+@Table(name = "tasks")
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class User {
+public class Task {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   private Long id;
 
-  @Column(name = "username")
-  @NotBlank
-  @Size(min = 3, max = 20)
-  private String username;
+  @ManyToOne
+  @JoinColumn(nullable = false, updatable = false)
+  private User user;
 
-  @Column(name = "password")
+  @Column(name = "task_description", nullable = false)
+  @Size(min = 10, max = 255)
   @NotBlank
-  @Size(min = 8, max = 64)
-  private String password;
-
-  // private List<Task> taskList = new ArrayList<Task>;
+  private String taskDescription;
 
 }
