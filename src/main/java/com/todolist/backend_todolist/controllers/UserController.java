@@ -40,7 +40,7 @@ public class UserController {
     }
   }
 
-  @GetMapping("/user/list-user/{id}")
+  @GetMapping("/user/list/{id}")
   public ResponseEntity<?> findUser(@PathVariable Long id) {
     UserDTO foundUser = userService.getUserById(id);
     return new ResponseEntity<>(foundUser, HttpStatus.FOUND);
