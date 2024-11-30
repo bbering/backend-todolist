@@ -1,6 +1,8 @@
 # Backend To-Do List
 
-Este projeto é uma API RESTful para gerenciamento de listas de tarefas (To-Do-List), desenvolvida utilizando Java Spring Boot. A API permite criar, editar, excluir e listar tarefas, além de criar, editar, excluir e listar usuários.
+Este projeto fullstack é uma API RESTful para gerenciamento de listas de tarefas (To-Do-List), desenvolvida utilizando Java Spring Boot. A API permite criar, editar, excluir e listar tarefas, além de criar, editar, excluir e listar usuários.
+
+O frontend do projeto esta disponível em: https://github.com/bbering/frontend-todolist
 
 ## Tecnologias Utilizadas
 
