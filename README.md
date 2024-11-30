@@ -30,6 +30,25 @@ O frontend do projeto esta disponível em: https://github.com/bbering/frontend-t
 | PUT /user/update/{id} | Altera um usuário com base no seu ID |
 | DELETE /user/delete/{id} | Deleta um usuário com base no seu ID |
 
+### Exemplo de requisição de POST para criar um usuário
+
+```json
+{
+  "username": "user_test",
+  "password": "user-pass-123#"
+}
+```
+
+Resposta esperada (201 Created)
+
+```json
+{
+    "id": 15,
+    "username": "user_test",
+    "password": "user-pass-123#"
+}
+```
+
 ## Manipulação de Tasks
 
 | Endpoint  | Retorno |
@@ -39,6 +58,33 @@ O frontend do projeto esta disponível em: https://github.com/bbering/frontend-t
 | POST /tasks/save | Atribui uma nova task a um usuário |
 | PUT /tasks/update/{id} | Atualiza uma task com base no seu ID |
 | DELETE /tasks/delete/{id} | Deleta uma task com base no seu ID |
+
+### Exemplo de requisição de POST para criar uma task
+
+```json
+    {
+        "userDTO":     {
+        "id": 15,
+        "username": "user_test_ALTERED",
+        "password": "user-pass-123#"
+    },
+        "taskDescription": "eat your vegetables"
+    }
+```
+
+Resposta esperada (Status 201)
+
+```json
+{
+    "id": 9,
+    "userDTO": {
+        "id": 15,
+        "username": "user_test_ALTERED",
+        "password": "user-pass-123#"
+    },
+    "taskDescription": "eat your vegetables"
+}
+```
 
 ## Como Executar o Projeto
 
