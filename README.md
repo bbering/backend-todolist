@@ -62,14 +62,12 @@ Resposta esperada (201 Created)
 ### Exemplo de requisição de POST para criar uma task
 
 ```json
-    {
-        "userDTO":     {
-        "id": 15,
-        "username": "user_test_ALTERED",
-        "password": "user-pass-123#"
-    },
-        "taskDescription": "eat your vegetables"
-    }
+{
+    "userDTO":{
+    "id": 15
+},
+    "taskDescription": "eat your vegetables"
+}
 ```
 
 Resposta esperada (Status 201)
